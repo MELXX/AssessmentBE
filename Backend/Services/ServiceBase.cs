@@ -7,42 +7,42 @@ namespace Backend.Services
 {
     public class ServiceBase<T> : ICRUDServiceBase<T> where T : class
     {
-        public AppDbContext cxt { get; }
+        public AppDbContext _context { get; }
 
         public ServiceBase(AppDbContext dbContext)
         {
-            cxt = dbContext;
+            _context = dbContext;
         }
 
 
         public async Task<T?> Create(T entity)
         {
-            await cxt.AddAsync<T>(entity);
-            await cxt.SaveChangesAsync();
+            await _context.AddAsync<T>(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
         public async Task<T?> Update(T entity)
         {
-            cxt.Update<T>(entity);
-            await cxt.SaveChangesAsync();
+            _context.Update<T>(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
         public T Delete(T entity)
         {
-            cxt.Remove<T>(entity);
-            cxt.SaveChanges();
+            _context.Remove<T>(entity);
+            _context.SaveChanges();
             return entity;
         }
 
         public async Task<T?> DeleteById(Guid Id)
         {
-            T temp = await cxt.FindAsync<T>(Id);
+            T temp = await _context.FindAsync<T>(Id);
             if (temp != null)
             {
-                cxt.Remove(temp);
-                await cxt.SaveChangesAsync();
+                _context.Remove(temp);
+                await _context.SaveChangesAsync();
                 return temp;
             }
             return default;
@@ -50,19 +50,19 @@ namespace Backend.Services
 
         public async Task<T?> Get(Guid Id)
         {
-            return await cxt.FindAsync<T>(Id);
+            return await _context.FindAsync<T>(Id);
         }
 
         public async Task<T[]> GetMany(int offSet)
         {
-            return await cxt.Set<T>()
+            return await _context.Set<T>()
                 .AsNoTracking()
                 .ToArrayAsync();
         }
 
         public async Task<T[]> GetByCondition(Func<T, bool> condition)
         {
-            return  cxt.Set<T>().AsNoTracking()
+            return  _context.Set<T>().AsNoTracking()
                 .Where(condition)
                 .ToArray();
         }

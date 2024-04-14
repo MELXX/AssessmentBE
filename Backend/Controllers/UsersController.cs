@@ -77,6 +77,12 @@ namespace Backend.Controllers
             return new OkObjectResult(response);
         }
 
+        [HttpGet("/count")]
+        public async Task<IActionResult> GetUserCount()
+        {
+            return new OkObjectResult(await _userService.Count());
+        }
+
         [HttpPut]
         public async Task<IActionResult> Update(UserRequestDTO request)
         {
