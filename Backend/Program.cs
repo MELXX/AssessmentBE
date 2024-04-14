@@ -5,7 +5,11 @@ using DAL.Data.Context;
 using DAL.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
-
+using FluentValidation;
+using System;
+using Backend.DTO.Request;
+using Backend.Validation;
+using Microsoft.Extensions.DependencyInjection;
 namespace Backend
 {
     public class Program
@@ -29,6 +33,10 @@ namespace Backend
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddSwaggerGen();
 
+            //validators
+            builder.Services.AddScoped<IValidator<UserRequestDTO>, UserValidatior>();
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -40,9 +48,10 @@ namespace Backend
 
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
+            
 
             //app.UseAuthorization();
-
+            
 
             app.MapControllers();
 

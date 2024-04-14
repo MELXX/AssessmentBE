@@ -8,15 +8,9 @@ namespace Backend.Validation
         public UserValidatior()
         {
             RuleFor(x => x.Surname).NotEmpty();
-            //RuleFor(x => x.Forename).NotEmpty().WithMessage("Please specify a first name");
-            //RuleFor(x => x.Discount).NotEqual(0).When(x => x.HasDiscount);
-            //RuleFor(x => x.Address).Length(20, 250);
-            //RuleFor(x => x.Postcode).Must(BeAValidPostcode).WithMessage("Please specify a valid postcode");
+            RuleFor(x => x.Email).NotEmpty();
+            RuleFor(x => x.Email).EmailAddress();
+            RuleFor(x => x.Name).NotEmpty();
         }
-
-        //private bool BeAValidPostcode(string postcode)
-        //{
-        //    // custom postcode validating logic goes here
-        //}
     }
 }

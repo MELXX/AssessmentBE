@@ -5,6 +5,10 @@ using System.Linq.Expressions;
 
 namespace Backend.Services
 {
+    /// <summary>
+    /// Simplifies creation of basic CRUD services, to create more refined logic inherit this class and extend 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ServiceBase<T> : ICRUDServiceBase<T> where T : class
     {
         public AppDbContext _context { get; }
