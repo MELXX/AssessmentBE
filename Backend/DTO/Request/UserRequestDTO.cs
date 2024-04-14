@@ -4,10 +4,10 @@ namespace Backend.DTO.Request
 {
     public class UserRequestDTO
     {
+        public Guid? Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; } //Move to email service
-        public ICollection<Guid> Groups { get; set; }
     }
 }

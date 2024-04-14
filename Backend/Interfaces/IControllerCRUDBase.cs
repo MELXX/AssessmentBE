@@ -1,0 +1,13 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Backend.Interfaces
+{
+    public interface IControllerCRUDBase<RequestDTO,ResponseDTO>
+    {
+        Task<IActionResult> Create(RequestDTO request);
+        Task<IActionResult> Read(Guid Id);
+        Task<IActionResult> Read();
+        Task<IActionResult> Update(RequestDTO request);
+        Task<IActionResult> Delete(Guid Id);
+    }
+}

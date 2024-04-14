@@ -15,17 +15,17 @@ namespace Backend.Services
         }
 
 
-        public T Create(T entity)
+        public async Task<T?> Create(T entity)
         {
-            cxt.Add<T>(entity);
-            cxt.SaveChanges();
+            await cxt.AddAsync<T>(entity);
+            await cxt.SaveChangesAsync();
             return entity;
         }
 
-        public T Update(T entity)
+        public async Task<T?> Update(T entity)
         {
             cxt.Update<T>(entity);
-            cxt.SaveChanges();
+            await cxt.SaveChangesAsync();
             return entity;
         }
 
@@ -36,31 +36,35 @@ namespace Backend.Services
             return entity;
         }
 
-        public T? DeleteById(Guid Id)
+        public async Task<T?> DeleteById(Guid Id)
         {
-            T temp = cxt.Find<T>(Id);
+            T temp = await cxt.FindAsync<T>(Id);
             if (temp != null)
             {
                 cxt.Remove(temp);
-                cxt.SaveChanges();
+                await cxt.SaveChangesAsync();
                 return temp;
             }
             return default;
         }
 
-        public T? Get(Guid Id)
+        public async Task<T?> Get(Guid Id)
         {
-            return cxt.Find<T>(Id);
+            return await cxt.FindAsync<T>(Id);
         }
 
-        public T[] GetMany(int offSet)
+        public async Task<T[]> GetMany(int offSet)
         {
-            return cxt.Set<T>().ToArray();
+            return await cxt.Set<T>()
+                .AsNoTracking()
+                .ToArrayAsync();
         }
 
-        public T[] GetByCondition(Func<T, bool> condition)
+        public async Task<T[]> GetByCondition(Func<T, bool> condition)
         {
-            return cxt.Set<T>().Where(condition).ToArray();
+            return  cxt.Set<T>().AsNoTracking()
+                .Where(condition)
+                .ToArray();
         }
     }
 }
