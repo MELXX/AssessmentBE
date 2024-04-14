@@ -1,4 +1,5 @@
 using Backend.Interfaces.Services;
+using Backend.Middleware;
 using Backend.Services;
 using DAL.Data.Context;
 using DAL.Data.Models;
@@ -37,9 +38,10 @@ namespace Backend
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
 
             app.MapControllers();
