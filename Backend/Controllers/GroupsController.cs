@@ -18,7 +18,7 @@ namespace Backend.Controllers
     public class GroupsController : AppControllerBase, IControllerCRUDBase<GroupRequestDTO, GroupResponseDTO>
     {
         private ICRUDServiceBase<Group> _groupService;
-        public GroupsController(ICRUDServiceBase<Group> GroupService,ILogger logger) : base(logger)
+        public GroupsController(ICRUDServiceBase<Group> GroupService,ILogger<GroupsController> logger) : base(logger)
         {
             _groupService = GroupService;
         }
@@ -63,7 +63,7 @@ namespace Backend.Controllers
             return NotFound();
         }
 
-        [HttpGet("/list")]
+        [HttpGet("list/")]
         public async Task<IActionResult> Read()
         {
             var data = await _groupService.GetMany(0);

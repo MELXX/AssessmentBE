@@ -10,6 +10,7 @@ namespace Backend.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
+        private Guid _id = new Guid();
 
         public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
@@ -25,7 +26,7 @@ namespace Backend.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong: {ex}");
+                _logger.LogError($"{DateTime.UtcNow} {_id.ToString()}Something went wrong: {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
@@ -38,7 +39,7 @@ namespace Backend.Middleware
             await context.Response.WriteAsJsonAsync(new 
             {
                 StatusCode = context.Response.StatusCode,
-                Message = "Internal Server Error from the custom middleware."
+                Message = "Internal Server Error: request id "+_id.ToString()
             });
         }
     }

@@ -13,7 +13,7 @@ namespace Backend.Controllers
     public class PermissionsController : AppControllerBase, IControllerCRUDBase<PermissionRequestDTO, PermissionResponseDTO>
     {
         private ICRUDServiceBase<Permission> _permissionService;
-        public PermissionsController(ICRUDServiceBase<Permission> PermissionService, ILogger logger) : base(logger)
+        public PermissionsController(ICRUDServiceBase<Permission> PermissionService, ILogger<PermissionsController> logger) : base(logger)
         {
             _permissionService = PermissionService;
         }
@@ -58,7 +58,7 @@ namespace Backend.Controllers
             return NotFound();
         }
 
-        [HttpGet("/list")]
+        [HttpGet("list/")]
         public async Task<IActionResult> Read()
         {
             var data = await _permissionService.GetMany(0);

@@ -63,7 +63,7 @@ namespace Backend.Controllers
             return NotFound();
         }
 
-        [HttpGet("/list")]
+        [HttpGet("list")]
         public async Task<IActionResult> Read()
         {
             var data = await _userService.GetMany(0);
