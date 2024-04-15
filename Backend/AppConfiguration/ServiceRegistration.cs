@@ -4,6 +4,9 @@ using DAL.Data.Models;
 
 namespace Backend.AppConfiguration
 {
+    /// <summary>
+    /// Register custom services for DI
+    /// </summary>
     public static class ServiceRegistration
     {
         public static void RegisterServices(IServiceCollection services) 

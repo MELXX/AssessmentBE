@@ -4,15 +4,18 @@ using FluentValidation;
 
 namespace Backend.AppConfiguration
 {
+    /// <summary>
+    /// Registration of model validation services
+    /// </summary>
     public static class FluentValidationConfiguration
     {
-        public static void RegisterValidation(WebApplicationBuilder builder)
+        public static void RegisterValidation(IServiceCollection services)
         {
-            builder.Services.AddScoped<IValidator<UserRequestDTO>, UserValidatior>();
-            builder.Services.AddScoped<IValidator<GroupRequestDTO>, GroupValidatior>();
-            builder.Services.AddScoped<IValidator<GroupPermissionRequestDTO>, GroupPermissionValidatior>();
-            builder.Services.AddScoped<IValidator<GroupUserRequestDTO>, GroupUserValidatior>();
-            builder.Services.AddScoped<IValidator<PermissionRequestDTO>, PermissionValidatior>();
+            services.AddScoped<IValidator<UserRequestDTO>, UserValidatior>();
+            services.AddScoped<IValidator<GroupRequestDTO>, GroupValidatior>();
+            services.AddScoped<IValidator<GroupPermissionRequestDTO>, GroupPermissionValidatior>();
+            services.AddScoped<IValidator<GroupUserRequestDTO>, GroupUserValidatior>();
+            services.AddScoped<IValidator<PermissionRequestDTO>, PermissionValidatior>();
         }
     }
 }

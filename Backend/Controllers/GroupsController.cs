@@ -24,13 +24,13 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
+        [Produces(typeof(GroupResponseDTO))]
         public async Task<IActionResult> Create(GroupRequestDTO request)
         {
             await _groupService.Create(new Group()
             {
                 Created = DateTime.Now,
                 Name = request.Name
-
             });
             return CreatedAtAction(nameof(Create), request);
         }
@@ -48,6 +48,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
+        [Produces(typeof(GroupResponseDTO))]
         public async Task<IActionResult> Read(Guid Id)
         {
             var result = await _groupService.Get(Id);
@@ -64,6 +65,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("list/")]
+        [Produces(typeof(GroupResponseDTO[]))]
         public async Task<IActionResult> Read()
         {
             var data = await _groupService.GetMany(0);
@@ -77,6 +79,8 @@ namespace Backend.Controllers
 
 
         [HttpPut]
+        [Produces(typeof(GroupResponseDTO))]
+
         public async Task<IActionResult> Update(GroupRequestDTO request)
         {
             var data = await _groupService.Get(request.Id.Value);

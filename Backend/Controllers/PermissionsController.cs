@@ -19,6 +19,8 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
+        [Produces(typeof(PermissionResponseDTO))]
+
         public async Task<IActionResult> Create(PermissionRequestDTO request)
         {
             await _permissionService.Create(new Permission()
@@ -43,6 +45,8 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
+        [Produces(typeof(PermissionResponseDTO))]
+
         public async Task<IActionResult> Read(Guid Id)
         {
             var result = await _permissionService.Get(Id);
@@ -59,6 +63,8 @@ namespace Backend.Controllers
         }
 
         [HttpGet("list/")]
+        [Produces(typeof(PermissionResponseDTO[]))]
+
         public async Task<IActionResult> Read()
         {
             var data = await _permissionService.GetMany(0);
@@ -72,6 +78,7 @@ namespace Backend.Controllers
 
 
         [HttpPut]
+        [Produces(typeof(PermissionResponseDTO))]
         public async Task<IActionResult> Update(PermissionRequestDTO request)
         {
             var data = await _permissionService.Get(request.Id.Value);

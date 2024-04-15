@@ -3,6 +3,6 @@
     public class GroupUserResponseDTO
     {
         public Guid GroupId { get; set; }
-        public UserResponseDTO[] Permissions { get; set; }
+        public ICollection<UserResponseDTO>? Permissions { get; set; } = new List<UserResponseDTO>();
     }
 }

@@ -19,6 +19,8 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
+        [Produces(typeof(UserResponseDTO))]
+
         public async Task<IActionResult> Create(UserRequestDTO request)
         {
             await _userService.Create(new User()
@@ -46,6 +48,8 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
+        [Produces(typeof(UserResponseDTO))]
+
         public async Task<IActionResult> Read(Guid Id)
         {
             var result = await _userService.Get(Id);
@@ -64,6 +68,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("list")]
+        [Produces(typeof(UserResponseDTO[]))]
         public async Task<IActionResult> Read()
         {
             var data = await _userService.GetMany(0);
@@ -74,16 +79,27 @@ namespace Backend.Controllers
                 Name = user.Name,
                 Surname = user.Surname,
             });
-            return new OkObjectResult(response);
+            var lst = new List<UserResponseDTO>();
+            for (int i = 0; i < 50; i++)
+            {
+                foreach (var item in response)
+                {
+                    lst.Add(item);
+                }
+            }
+            return new OkObjectResult(lst);
         }
 
         [HttpGet("/count")]
+        [Produces(typeof(int))]
+
         public async Task<IActionResult> GetUserCount()
         {
             return new OkObjectResult(await _userService.Count());
         }
 
         [HttpPut]
+        [Produces(typeof(UserResponseDTO))]
         public async Task<IActionResult> Update(UserRequestDTO request)
         {
             var data = await _userService.Get(request.Id.Value);
