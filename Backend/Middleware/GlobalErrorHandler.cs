@@ -26,7 +26,7 @@ namespace Backend.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{DateTime.UtcNow} {_id.ToString()}Something went wrong: {ex}");
+                _logger.LogError($"{DateTime.UtcNow} {_id.ToString()} Something went wrong: {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }

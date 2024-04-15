@@ -36,6 +36,10 @@ namespace Backend
 
             //validators
             builder.Services.AddScoped<IValidator<UserRequestDTO>, UserValidatior>();
+            builder.Services.AddScoped<IValidator<GroupRequestDTO>, GroupValidatior>();
+            builder.Services.AddScoped<IValidator<GroupPermissionRequestDTO>, GroupPermissionValidatior>();
+            builder.Services.AddScoped<IValidator<GroupUserRequestDTO>, GroupUserValidatior>();
+            builder.Services.AddScoped<IValidator<PermissionRequestDTO>, PermissionValidatior>();
 
             //Cors config
             builder.Services.AddCors(c =>
