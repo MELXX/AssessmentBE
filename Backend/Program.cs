@@ -56,7 +56,14 @@ namespace Backend
 
 
             app.MapControllers();
-
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetService<AppDbContext>().Database;
+                if (db.GetPendingMigrations().Count() > 0)
+                {
+                    db.Migrate();
+                }
+            }
             app.Run();
         }
     }
