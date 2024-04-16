@@ -81,10 +81,15 @@ namespace Backend.Services
         
         public async Task<Group[]?> GetGroupUsersAndPermission(Guid id = default)
         {
-            IQueryable<Group> query = _context.Group.Include(x => x.Users).Include(x => x.Permissions);
+            IQueryable<Group> query = _context.Group
+                .Include(x => x.Users)
+                .ThenInclude(x => x.User)
+                .Include(x => x.Permissions)
+                .ThenInclude(x => x.Permission);
+
             if (id != default)
-                query = query.AsQueryable().Where(x=> x.Id == id);
-            return await _context.Group.Include(x => x.Users).Include(x => x.Permissions).ToArrayAsync();
+                query = query.Where(x=> x.Id == id);
+            return await query.ToArrayAsync();
         }
 
         private IEnumerable<Guid> GetDelta(IEnumerable<Guid> current, IEnumerable<Guid> newData)
