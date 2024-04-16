@@ -89,7 +89,7 @@ namespace Backend.Services
 
         private IEnumerable<Guid> GetDelta(IEnumerable<Guid> current, IEnumerable<Guid> newData)
         {
-            return current.Where(x=> !newData.Contains(x));
+            return newData.Except(current);
         }
     }
 }
