@@ -79,15 +79,7 @@ namespace Backend.Controllers
                 Name = user.Name,
                 Surname = user.Surname,
             });
-            var lst = new List<UserResponseDTO>();
-            for (int i = 0; i < 50; i++)
-            {
-                foreach (var item in response)
-                {
-                    lst.Add(item);
-                }
-            }
-            return new OkObjectResult(lst);
+            return new OkObjectResult(response);
         }
 
         [HttpGet("/count")]

@@ -14,7 +14,11 @@ namespace Backend.Services
         public async Task<bool> AddPermissionsToGroup(Guid GroupId, Guid[] PermissionIds)
         {
             var group = await _context.Group.FindAsync(GroupId);
-            var permissions = await _context.Permission.AsNoTracking().Where(Permission => PermissionIds.Contains(Permission.Id)).ToArrayAsync();
+
+            var permissions = await _context.Permission
+                .Where(Permission => PermissionIds.Contains(Permission.Id))
+                .ToArrayAsync();
+
             if (group != default && permissions != default)
             {
                 var groupPerm = await _context.GroupPermissions
@@ -45,7 +49,9 @@ namespace Backend.Services
         public async Task<bool> AddUsersToGroup(Guid GroupId, Guid[] UserIds)
         {
             var group = await _context.Group.FindAsync(GroupId);
-            var users = await _context.User.AsNoTracking().Where(user => UserIds.Contains(user.Id)).ToArrayAsync();
+            var users = await _context.User
+                .Where(user => UserIds.Contains(user.Id))
+                .ToArrayAsync();
             if (group != default && users != default)
             {
                 var groupPerm = await _context.UserGroup
@@ -72,10 +78,18 @@ namespace Backend.Services
 
             return false;
         }
+        
+        public async Task<Group[]?> GetGroupUsersAndPermission(Guid id = default)
+        {
+            IQueryable<Group> query = _context.Group.Include(x => x.Users).Include(x => x.Permissions);
+            if (id != default)
+                query = query.AsQueryable().Where(x=> x.Id == id);
+            return await _context.Group.Include(x => x.Users).Include(x => x.Permissions).ToArrayAsync();
+        }
 
         private IEnumerable<Guid> GetDelta(IEnumerable<Guid> current, IEnumerable<Guid> newData)
         {
-            return current.Union(newData);
+            return current.Where(x=> !newData.Contains(x));
         }
     }
 }

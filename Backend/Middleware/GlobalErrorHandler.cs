@@ -10,7 +10,7 @@ namespace Backend.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
-        private Guid _id = new Guid();
+        private Guid _id = Guid.NewGuid();
 
         public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {

@@ -12,7 +12,7 @@ namespace Backend.AppConfiguration
         public static void RegisterServices(IServiceCollection services) 
         {
             services.AddScoped<ICRUDServiceBase<Permission>, ServiceBase<Permission>>();
-            services.AddScoped<ICRUDServiceBase<Group>, ServiceBase<Group>>();
+            services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ICRUDServiceBase<UserGroup>, ServiceBase<UserGroup>>();
             services.AddScoped<ICRUDServiceBase<GroupPermission>, ServiceBase<GroupPermission>>();
             services.AddScoped<IUserService, UserService>();

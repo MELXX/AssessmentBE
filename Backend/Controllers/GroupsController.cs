@@ -12,15 +12,21 @@ using Backend.DTO.Response;
 using Backend.Interfaces;
 using Backend.Interfaces.Services;
 using Backend.Services;
+using Backend.Extentions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Backend.Controllers
 {
     public class GroupsController : AppControllerBase, IControllerCRUDBase<GroupRequestDTO, GroupResponseDTO>
     {
-        private ICRUDServiceBase<Group> _groupService;
-        public GroupsController(ICRUDServiceBase<Group> GroupService,ILogger<GroupsController> logger) : base(logger)
+        private readonly ICRUDServiceBase<Permission> _permissionService;
+        private readonly ICRUDServiceBase<UserGroup> _userGroupService;
+        private readonly IGroupService _groupService;
+        public GroupsController(ICRUDServiceBase<UserGroup> userGroupService, ICRUDServiceBase<Permission> permissionService, IGroupService GroupService, ILogger<GroupsController> logger) : base(logger)
         {
+            _permissionService = permissionService;
             _groupService = GroupService;
+            _userGroupService = userGroupService;
         }
 
         [HttpPost]
@@ -68,12 +74,14 @@ namespace Backend.Controllers
         [Produces(typeof(GroupResponseDTO[]))]
         public async Task<IActionResult> Read()
         {
-            var data = await _groupService.GetMany(0);
+            var data = await _groupService.GetGroupUsersAndPermission();
             var response = data.Select(Group => new GroupResponseDTO()
             {
                 Id = Group.Id,
                 Name = Group.Name,
-            });
+                Permissions = Group.Permissions.Select(x => x.Permission).Select(x => x.ToPermissionResponseDTO()).ToArray(),
+                Users = Group.Users.Select(x => x?.User).Select(x => x.ToUserResponseDTO()).ToArray()
+            }) ;
             return new OkObjectResult(response);
         }
 
@@ -92,5 +100,38 @@ namespace Backend.Controllers
             }
             return NotFound();
         }
+
+        [HttpPut("GroupUserAdd/")]
+        public async Task<IActionResult> GroupUserAdd(GroupUserRequestDTO request)
+        {
+            var isAdded = await _groupService.AddUsersToGroup(request.GroupId, request.UserIds);
+            if (isAdded)
+            {
+                var result = await _groupService.GetGroupUsersAndPermission();
+                
+                //var response = new GroupResponseDTO()
+                //{
+                //    Id = request.GroupId,
+                //    Name = result[0].Name,
+                //    Permissions = ,
+                //};
+                return Ok();
+            }
+            return BadRequest();
+
+        }
+
+        [HttpPut("GroupPermissionAdd/")]
+        public async Task<IActionResult> GroupPermissionAdd(GroupPermissionRequestDTO request)
+        {
+            var isAdded = await _groupService.AddPermissionsToGroup(request.GroupId, request.PermissionIds);
+            if (isAdded)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+
     }
 }
